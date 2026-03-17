@@ -218,15 +218,21 @@ function Gallery() {
         )}
 
         {/* CHROME-STYLE ZOOM MODAL */}
-        {zoomedImage && (
-  <div className="zoom-overlay" onClick={closeZoom}>
-    <div 
-      className="zoom-container" 
-      onClick={(e) => e.stopPropagation()}
-    >
-      <img src={zoomedImage.src} alt={zoomedImage.title} />
-      <button className="zoom-close" onClick={closeZoom}>×</button>
-      <div className="zoom-info">
+       {zoomedImage && (
+  <div 
+    className="zoom-overlay" 
+    onClick={closeZoom}
+  >
+    <div className="zoom-image-container">
+      <img 
+        src={zoomedImage.src} 
+        alt={zoomedImage.title}
+        className="zoom-image"
+      />
+      <div className="zoom-toolbar">
+        <button className="zoom-close-btn" onClick={closeZoom}>✕</button>
+      </div>
+      <div className="zoom-details">
         <h3>{zoomedImage.title}</h3>
         <p>{zoomedImage.location} • {zoomedImage.date}</p>
       </div>
