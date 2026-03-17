@@ -14,87 +14,91 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
 }
-/* FIXED Chrome-style Image Zoom */
+
+/* BULLETPROOF CHROME ZOOM */
 .zoom-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(5px);
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0,0,0,0.95) !important;
+  z-index: 10000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
 }
 
-.zoom-container {
-  position: relative;
-  width: 90vw;
-  max-width: 1200px;
-  height: 80vh;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: grab;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+.zoom-image-container {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  background: white !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8) !important;
 }
 
-.zoom-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;  /* FIXED: contain instead of cover */
-  object-position: center;
-  transition: transform 0.3s ease;
+.zoom-image {
+  width: 100% !important;
+  height: 500px !important;
+  min-height: 400px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  display: block !important;
 }
 
-/* Hover zoom effect */
-.zoom-container:hover img {
-  transform: scale(1.05);
+.zoom-toolbar {
+  position: absolute !important;
+  top: 15px !important;
+  right: 15px !important;
+  z-index: 10 !important;
 }
 
-.zoom-close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.7);
-  border: none;
-  color: white;
-  font-size: 2rem;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 10;
-  backdrop-filter: blur(10px);
+.zoom-close-btn {
+  background: rgba(255,255,255,0.9) !important;
+  border: none !important;
+  width: 45px !important;
+  height: 45px !important;
+  border-radius: 50% !important;
+  font-size: 1.4rem !important;
+  cursor: pointer !important;
+  color: #333 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+  transition: all 0.2s !important;
 }
 
-.zoom-close:hover {
-  background: rgba(255, 0, 0, 0.8);
+.zoom-close-btn:hover {
+  background: #ff4444 !important;
+  color: white !important;
+  transform: scale(1.1) !important;
 }
 
-.zoom-info {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  color: white;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 15px 20px;
-  border-radius: 8px;
-  text-align: center;
+.zoom-details {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: linear-gradient(transparent, rgba(0,0,0,0.9)) !important;
+  color: white !important;
+  padding: 30px 20px 20px !important;
+  text-align: center !important;
 }
 
-.zoom-info h3 {
-  margin: 0 0 5px 0;
-  font-size: 1.4rem;
+.zoom-details h3 {
+  margin: 0 0 5px 0 !important;
+  font-size: 1.3rem !important;
 }
 
-.zoom-info p {
-  margin: 0;
-  opacity: 0.9;
-  font-size: 1rem;
+.zoom-details p {
+  margin: 0 !important;
+  opacity: 0.9 !important;
 }
+
+
 
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
@@ -708,96 +712,9 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:
   transform: scale(1.05);
 }
 
-/* Chrome-style Image Zoom */
-.zoom-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(5px);
-  animation: fadeIn 0.3s ease;
-}
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-.zoom-container {
-  position: relative;
-  width: 90vw;
-  max-width: 1200px;
-  height: 80vh;
-  max-height: 800px;
-  background-size: 150% 150%; /* Zoomed size */
-  background-repeat: no-repeat;
-  background-position: center;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: zoom-out;
-  transition: all 0.3s ease;
-}
-
-.zoom-container:hover {
-  background-size: 160% 160%;
-}
-
-.zoom-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0; /* Hidden - use background */
-  pointer-events: none;
-}
-
-.zoom-close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: white;
-  font-size: 2rem;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 10;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s;
-}
-
-.zoom-close:hover {
-  background: rgba(255, 255, 255, 0.4);
-  transform: scale(1.1);
-}
-
-.zoom-info {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  color: white;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 15px 20px;
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-}
-
-.zoom-info h3 {
-  margin: 0 0 5px 0;
-  font-size: 1.3rem;
-}
-
-.zoom-info p {
-  margin: 0;
-  opacity: 0.9;
-  font-size: 0.95rem;
 }
 
 /* Update gallery-item cursor */
