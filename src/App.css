@@ -626,3 +626,100 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:
   background: rgba(255,255,255,0.4);
   transform: scale(1.05);
 }
+
+/* Chrome-style Image Zoom */
+.zoom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.zoom-container {
+  position: relative;
+  width: 90vw;
+  max-width: 1200px;
+  height: 80vh;
+  max-height: 800px;
+  background-size: 150% 150%; /* Zoomed size */
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: zoom-out;
+  transition: all 0.3s ease;
+}
+
+.zoom-container:hover {
+  background-size: 160% 160%;
+}
+
+.zoom-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0; /* Hidden - use background */
+  pointer-events: none;
+}
+
+.zoom-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s;
+}
+
+.zoom-close:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1);
+}
+
+.zoom-info {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px 20px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.zoom-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.3rem;
+}
+
+.zoom-info p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+/* Update gallery-item cursor */
+.gallery-item {
+  cursor: zoom-in !important;
+}
