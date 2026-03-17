@@ -129,10 +129,27 @@ const images = Array.from({ length: 100 }, (_, i) => ({
 function Gallery() {
   const [visibleImages, setVisibleImages] = useState(8);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [zoomedImage, setZoomedImage] = useState(null); // ← NEW ZOOM STATE
+  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+  const galleryRef = useRef(null);
 
   const loadMoreImages = useCallback(() => {
     setVisibleImages(prev => Math.min(prev + 4, images.length));
   }, []);
+
+  // Chrome-style zoom click
+  const handleImageClick = (image, e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setZoomPosition({
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height
+    });
+    setZoomedImage(image);
+  };
+
+  const closeZoom = () => {
+    setZoomedImage(null);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -145,10 +162,21 @@ function Gallery() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loadMoreImages]);
 
+  // ESC key to close zoom
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && zoomedImage) {
+        closeZoom();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [zoomedImage]);
+
   return (
     <>
       <Navbar />
-      <div className="page-section">
+      <div className="page-section" ref={galleryRef}>
         <h1 className="page-title">🏙️ Cityscape Gallery</h1>
         <div className="stats">
           <span>{visibleImages} of {images.length} stunning cityscapes loaded</span>
@@ -157,11 +185,12 @@ function Gallery() {
         <div className="gallery-container">
           {images.slice(0, visibleImages).map((image, index) => (
             <div key={image.id} className="image-card">
-              {/* Image */}
               <div
                 className={`gallery-item ${hoveredIndex === index ? 'hover' : ''}`}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
+                onClick={(e) => handleImageClick(image, e)} // ← CLICK TO ZOOM
+                style={{ cursor: 'zoom-in' }}
               >
                 <img src={image.src} alt={image.title} loading="lazy" />
                 <div className="overlay">
@@ -170,7 +199,6 @@ function Gallery() {
                 </div>
               </div>
               
-              {/* Info Below Image */}
               <div className="image-info">
                 <h4>{image.title}</h4>
                 <div className="info-meta">
@@ -186,6 +214,26 @@ function Gallery() {
         {visibleImages < images.length && (
           <div className="load-more" onClick={loadMoreImages}>
             🏙️ Load More Cityscapes
+          </div>
+        )}
+
+        {/* CHROME-STYLE ZOOM MODAL */}
+        {zoomedImage && (
+          <div className="zoom-overlay" onClick={closeZoom}>
+            <div 
+              className="zoom-container" 
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                backgroundPosition: `${zoomPosition.x * 100}% ${zoomPosition.y * 100}%`
+              }}
+            >
+              <img src={zoomedImage.src} alt={zoomedImage.title} />
+              <div className="zoom-close" onClick={closeZoom}>×</div>
+              <div className="zoom-info">
+                <h3>{zoomedImage.title}</h3>
+                <p>{zoomedImage.location} • {zoomedImage.date}</p>
+              </div>
+            </div>
           </div>
         )}
       </div>
